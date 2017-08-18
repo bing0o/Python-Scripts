@@ -38,16 +38,7 @@ parser = OptionParser("""
 
 
 """)
-"""
-def connect(host, user, password):
-    try:
-        s = pxssh.pxssh()
-        s.login(host, user, password)
-        print cl.red+("\n[+] Password Found: [ {} ] ".format(password))+cl.end
-        exit(0)
-    except Exception:
-        return None 
-"""
+
 def connect(host, user, password):
     try:
         s = pxssh.pxssh()
