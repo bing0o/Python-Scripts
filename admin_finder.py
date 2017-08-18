@@ -2,7 +2,6 @@
 
 import time
 import urllib.request
-from optparse import *
 
 class colors:
         def __init__(self):
