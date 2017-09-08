@@ -31,7 +31,8 @@ parser = OptionParser("""
         python cracker.py -w <hash> -t <type> -f <word list file>
 
 #Example:
-		python cracker.py -w 7052cad6b415f4272c1986aa9a50a7c3 -t md5 -f wordlist.txt
+
+	python cracker.py -w 7052cad6b415f4272c1986aa9a50a7c3 -t md5 -f wordlist.txt
 """)
 parser.add_option("-w",dest="ha_sh",type="string",help="enter hash string")
 parser.add_option("-t",dest="ty_pe",type="string",help="enter type the hash")
@@ -53,7 +54,7 @@ else:
     	if ha_sh == result:
     		print ("\nHash Found: [ {} ] >> word: [ {} ]".format(result,word))
     		exit(0)
-		else:
-			continue
+	else:
+		continue
 
 print("\n\thash not found :(\n")
