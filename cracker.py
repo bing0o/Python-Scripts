@@ -32,7 +32,7 @@ parser = OptionParser("""
 
 #Example:
 
-		python cracker.py -w 7052cad6b415f4272c1986aa9a50a7c3 -t md5 -f wordlist.txt
+	python cracker.py -w 7052cad6b415f4272c1986aa9a50a7c3 -t md5 -f wordlist.txt
 """)
 parser.add_option("-w",dest="ha_sh",type="string",help="enter hash string")
 parser.add_option("-t",dest="ty_pe",type="string",help="enter type the hash")
