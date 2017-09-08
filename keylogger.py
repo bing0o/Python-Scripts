@@ -2,7 +2,6 @@
 
 import pyxhook
 
-
 """
 	*--------------------------------------*
 	|       programmed by : mohamed        |
@@ -16,7 +15,6 @@ import pyxhook
 	
 	               Keylogger
 	              -----------
-
 """
 
 
