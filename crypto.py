@@ -16,27 +16,28 @@ class colors:
 cl = colors()
 
 
+print(cl.red+"""
 
-print(cl.red+"""                           
-\t           
-\t                |    
-\t                |
-\t           ------------        -----------
-\t                |
-\t                |
-\t    )                                           (  
+\t
+\t               |
+\t               |
+\t          -----+------        -----------
+\t               |                                   
+\t               |
+\t    )                                           (
 \t    \ \                                       / /
-\t     \ |\                                   / |/ 
-\t      \|  \            hacklab            /   /   
-\t       \   |\          -------          / |  /  
-\t        \  |  \_______________________/   | /  
-\t         \ |    |      |      |      |    |/ 
+\t     \ |\                                   / |/
+\t      \|  \           hack1lab            /   /
+\t       \   |\         --------          / |  /
+\t        \  |  \_______________________/   | /
+\t         \ |    |      |      |      |    |/
 \t          \|    |      |      |      |    /
 \t           \____|______|______|______|___/
 
 
-# fb.me/hack1lab
-# fb.me/mohamed1lar
+
+\t              By: @hacklab, @mohamed1lar
+\t          fb.me/hack1lab, fb.me/mohamed1lar
 
 """+cl.end)
 
@@ -52,9 +53,9 @@ parser = OptionParser("""
 
 #Example:
 	
-	python crypto.py -e <File To Encrypt> -p <Password>
+   Encryption:	python crypto.py -e <File To Encrypt> -p <Password>
 
-	python crypto.py -d <File To Decrypt> -p <Password>
+   Decryption:	python crypto.py -d <File To Decrypt> -p <Password>
 
 
 """)
