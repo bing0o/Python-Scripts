@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+import os, time
+from Crypto.Cipher import AES
+from Crypto.Hash import SHA256
+from Crypto import Random
+from optparse import *
 
 class colors:
         def __init__(self):
@@ -35,12 +40,6 @@ print(cl.red+"""
 
 """+cl.end)
 
-
-import os, time
-from Crypto.Cipher import AES
-from Crypto.Hash import SHA256
-from Crypto import Random
-from optparse import *
 
 parser = OptionParser("""
 
