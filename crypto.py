@@ -1,12 +1,5 @@
 #!/usr/bin/python
 
-import os
-from Crypto.Cipher import AES
-from Crypto.Hash import SHA256
-from Crypto import Random
-from optparse import *
-
-
 
 class colors:
         def __init__(self):
@@ -14,6 +7,7 @@ class colors:
                 self.red = "\033[91m"
                 self.end = "\033[0m"
 cl = colors()
+
 
 
 print(cl.red+"""
@@ -42,6 +36,11 @@ print(cl.red+"""
 """+cl.end)
 
 
+import os, time
+from Crypto.Cipher import AES
+from Crypto.Hash import SHA256
+from Crypto import Random
+from optparse import *
 
 parser = OptionParser("""
 
@@ -52,16 +51,16 @@ parser = OptionParser("""
 	-p   password to encryption or decryption
 
 #Example:
-	
-   Encryption:	python crypto.py -e <File To Encrypt> -p <Password>
 
-   Decryption:	python crypto.py -d <File To Decrypt> -p <Password>
+	python crypto.py -e <File To Encrypt> -p <Password>
+
+	python crypto.py -d <File To Decrypt> -p <Password>
 
 
 """)
 
 def encrypt(key, filename):
-	size = 64*1024
+	chunksize = 64*1024
 	outputFile = "hacklab."+filename
 	filesize = str(os.path.getsize(filename)).zfill(16)
 	IV = Random.new().read(16)
@@ -74,7 +73,7 @@ def encrypt(key, filename):
 			outfile.write(IV)
 
 			while True:
-				chunk = infile.read(size)
+				chunk = infile.read(chunksize)
 
 				if len(chunk) == 0:
 					break
@@ -84,7 +83,7 @@ def encrypt(key, filename):
 				outfile.write(encryptor.encrypt(chunk))
 
 def decrypt(key, filename):
-	size = 64 * 1024
+	chunksize = 64 * 1024
 	outputFile = filename.split('hacklab.')[1]
 
 	with open(filename, 'rb') as infile:
@@ -94,7 +93,7 @@ def decrypt(key, filename):
 
 		with open(outputFile, 'wb') as outfile:
 			while True:
-				chunk = infile.read(size)
+				chunk = infile.read(chunksize)
 
 				if len(chunk) == 0:
 					break
@@ -107,9 +106,9 @@ def getkey(password):
 	return hasher.digest()
 
 def Main():
-	parser.add_option("-e",dest="en",type="string", help="enter file to encryption")
-	parser.add_option("-d",dest="de",type="string", help="enter file to decryption")
-	parser.add_option("-p",dest="password",type="string", help="enter password")
+	parser.add_option("-e",dest="en",type="string", help="This Option To Encryption Files")
+	parser.add_option("-d",dest="de",type="string", help="This Option To Decrytpion Files")
+	parser.add_option("-p",dest="password",type="string", help="Enter Password")
 	(options, args) = parser.parse_args()
 	if options.en == None and options.de == None:
 		print(cl.blue+parser.usage+cl.end)
@@ -119,16 +118,21 @@ def Main():
 		de = str(options.de)
 		password = str(options.password)
 		if options.de == None:
+			print(cl.red+"[+] Encrypting......"+cl.end)
 			encrypt(getkey(password), en)
+			print(cl.red+"[+] removing file......"+cl.end)
+			time.sleep(1.5)
 			os.remove(en)
-			print(cl.red+"\n\t* Done *"+cl.end)
+			print(cl.red+"\n[+] Done"+cl.end)
 		elif options.en == None:
+			print(cl.red+"[+] Decrypting......"+cl.end)
 			decrypt(getkey(password), de)
+			print(cl.red+"[+] removing file......"+cl.end)
 			os.remove(de)
-			print(cl.red+'\n\t* Done *'+cl.end)
+			time.sleep(1.5)
+			print(cl.red+'\n[+] Done'+cl.end)
 		else:
 			print("Oops operation failed")
-
 
 if __name__ == '__main__':
 	Main()
