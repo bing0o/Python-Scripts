@@ -45,22 +45,22 @@ parser = OptionParser("""
 
 #Usage:
 
-	-e   file to encryption
-	-d   file to decryption
-	-p   password to encryption or decryption
+	-e   to encrypt files
+	-d   to decrypt files
+	-p   password to encryption or decryption files
 
 #Example:
 
-	python crypto.py -e <File To Encrypt> -p <Password>
+	python crypto.py -e <Your File> -p <Password>
 
-	python crypto.py -d <File To Decrypt> -p <Password>
+	python crypto.py -d <Your File> -p <Password>
 
 
 """)
 
 def encrypt(key, filename):
 	chunksize = 64*1024
-	outputFile = "hacklab."+filename
+	outputFile = filename+".hacklab"
 	filesize = str(os.path.getsize(filename)).zfill(16)
 	IV = Random.new().read(16)
 
@@ -83,7 +83,7 @@ def encrypt(key, filename):
 
 def decrypt(key, filename):
 	chunksize = 64 * 1024
-	outputFile = filename.split('hacklab.')[1]
+	outputFile = filename.split('.hacklab')[0]
 
 	with open(filename, 'rb') as infile:
 		filesize = int(infile.read(16))
