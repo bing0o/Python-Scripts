@@ -14,7 +14,7 @@
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
-#  
+# 
 #  
 
 yellow = "\033[93m"
@@ -31,7 +31,7 @@ print(blue+bold+"""
 \t  __| (_)_ __| |__  _ __ _   _| |_ ___ 
 \t / _` | | '__| '_ \| '__| | | | __/ _ \\
 \t| (_| | | |  | |_) | |  | |_| | ||  __/
-\t \__,_|_|_|  |_.__/|_|   \__,_|\__\___|"""+red+"V: 1.5"+blue+"""
+\t \__,_|_|_|  |_.__/|_|   \__,_|\__\___|"""+bold+"V: 1.5"+ end +blue+"""
 \t
 \t             Coded by: Bingo
 \t             ---------------
@@ -39,12 +39,11 @@ print(blue+bold+"""
 
 
 from concurrent.futures import ThreadPoolExecutor as executor
-from threading import Lock
 import sys, time, requests
 
 
 start = time.time()
-
+count = 0
 
 def printer(word):
 	sys.stdout.write(word + "                                        \r")
@@ -52,43 +51,114 @@ def printer(word):
 	return True
 
 
-def checkstatus(domain, url):
-	printer("Testing: " + domain + url)
-	#time.sleep(1)
-	try:
-		link = domain + url
-		req = requests.head(link)
-		st = str(req.status_code)
-		if st.startswith("2"):
-			print(green + "[+] 200 | Found: " + end + "[ " + url + " ]" + "                                                   \r")
-		elif st.startswith("3"):
-			link = req.headers['Location']
-			link = req.url
-			print(yellow + "[*] "+st+" | Redirection From: " + end + "[ " + url + " ]" + yellow + " -> " + end + "[ " + link + " ]" + "                                         \r")
+def presearch(domain, ext, url):
+	if ext == 'Null':
+		checkstatus(domain, url)
+	elif url == "" or url == " ":
+		pass
+	else:
+		ext = list(ext)
+		ext.append("")
+		for i in ext:
+			if i == "":
+				link = url
+			else:
+				link = url + "." + str(i)
+			
+			checkstatus(domain, link)
 
-		#writer(link,'up')
-		
-		return True
-		
-	except Exception:
-		#writer(url,'down')
-		return False
+
+def checkstatus(domain, url):
+	if url == "" or url == " ":
+		pass
+	elif url.startswith("#"):
+		pass
+	elif len(url) > 30:
+		pass
+
+	else:
+		printer("Testing: " + domain + url)
+		#time.sleep(1)
+		try:
+			link = domain + url
+			req = requests.head(link)
+			st = str(req.status_code)
+			if st.startswith("2"):
+				print(green + "[+] 200 | Found: " + end + "[ " + url + " ]" + "                                                   \r")
+			elif st.startswith("3"):
+				link = req.headers['Location']
+				#link = req.url
+				print(yellow + "[*] "+st+" | Redirection From: " + end + "[ " + url + " ]" + yellow + " -> " + end + "[ " + link + " ]" + "                                         \r")
+
+			#writer(link,'up')
+			
+			return True
+			
+		except Exception:
+			#writer(url,'down')
+			return False
 
 
 try:
 	urlsfile = sys.argv[1]#raw_input("[subdomains]> ")
 	domain = sys.argv[2]
+	
 
 except Exception:
-	print(blue + "#Usage:\n\tpython subchecker.py <paths file> <domain>\n" + end)
+	print(red + "#Usage:\n\tpython dirbrute.py <Wordlist> <Domain> <Thread (optional)> <extensions (optional)>\n" + end)
 	exit(0)
 
+try:
+	thread = sys.argv[3]
+
+except:
+	thread = 20
+
+try:
+	ext = sys.argv[4]
+	#ext = list(ext)
+except:
+	ext = "Null"
+
+#print(ext)
+
+if ext == "Null":
+	pass
+
+else:
+	ext = ext.split(",")
+
+
+
+if domain.startswith("http"):
+	domain = domain
+else:
+	domain = "http://" + domain
+
+if domain.endswith("/"):
+	domain = domain
+else:
+	domain = domain + "/"
+
+
+
+
+lines = len(open(urlsfile).readlines())
+
+print("=============================<["+ yellow +"Info"+ end +"]>============================\n")
+print(blue + bold + "["+red+"+"+blue+"] Target: " + end + domain)
+print(blue + bold +"["+red+"+"+blue+"] File: " + end + urlsfile)
+print(blue + bold +"["+red+"+"+blue+"] Length: " + end + str(lines))
+print(blue + bold +"["+red+"+"+blue+"] Thread: " + end + str(thread))
+print("\n======================<["+ yellow +"Start Searching"+ end +"]>======================\n")
+
+#exit(0)
 
 urls = open(urlsfile, 'r')
 
 
-with executor(max_workers=20) as exe:
-	jobs = [exe.submit(checkstatus, domain, url.strip('\n')) for url in urls]
+with executor(max_workers=int(thread)) as exe:
+	jobs = [exe.submit(presearch, domain, ext, url.strip('\n')) for url in urls]
 	#results = [job.result() for job in jobs]
 	
 #print('\n'.join(results))
