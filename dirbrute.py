@@ -43,7 +43,6 @@ import sys, time, requests
 
 
 start = time.time()
-count = 0
 
 def printer(word):
 	sys.stdout.write(word + "                                        \r")
@@ -78,7 +77,6 @@ def checkstatus(domain, url):
 
 	else:
 		printer("Testing: " + domain + url)
-		#time.sleep(1)
 		try:
 			link = domain + url
 			req = requests.head(link)
@@ -87,10 +85,8 @@ def checkstatus(domain, url):
 				print(green + "[+] 200 | Found: " + end + "[ " + url + " ]" + "                                                   \r")
 			elif st.startswith("3"):
 				link = req.headers['Location']
-				#link = req.url
 				print(yellow + "[*] "+st+" | Redirection From: " + end + "[ " + url + " ]" + yellow + " -> " + end + "[ " + link + " ]" + "                                         \r")
-
-			#writer(link,'up')
+				
 			
 			return True
 			
@@ -100,7 +96,7 @@ def checkstatus(domain, url):
 
 
 try:
-	urlsfile = sys.argv[1]#raw_input("[subdomains]> ")
+	urlsfile = sys.argv[1]
 	domain = sys.argv[2]
 	
 
@@ -120,7 +116,6 @@ try:
 except:
 	ext = "Null"
 
-#print(ext)
 
 if ext == "Null":
 	pass
@@ -140,9 +135,6 @@ if domain.endswith("/"):
 else:
 	domain = domain + "/"
 
-
-
-
 lines = len(open(urlsfile).readlines())
 
 print("=============================<["+ yellow +"Info"+ end +"]>============================\n")
@@ -152,19 +144,11 @@ print(blue + bold +"["+red+"+"+blue+"] Length: " + end + str(lines))
 print(blue + bold +"["+red+"+"+blue+"] Thread: " + end + str(thread))
 print("\n======================<["+ yellow +"Start Searching"+ end +"]>======================\n")
 
-#exit(0)
-
 urls = open(urlsfile, 'r')
-
 
 with executor(max_workers=int(thread)) as exe:
 	jobs = [exe.submit(presearch, domain, ext, url.strip('\n')) for url in urls]
-	#results = [job.result() for job in jobs]
-	
-#print('\n'.join(results))
-
 
 print(red+"Took: "+end, time.time() - start, "                          \r")
 
 print("\n\t* Happy Hacking *")
-
