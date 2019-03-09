@@ -12,6 +12,7 @@ a Collection of simple python scripts, for penetration testing & automation
 &nbsp;&nbsp;:small_orange_diamond: [hash_cracker.py](hash_cracker.py): simple tool to crack hash, md5, sha1, sha-256, sha-512 ...etc. </br>
 &nbsp;&nbsp;:small_orange_diamond: [hashing.py](hashing.py): gets you the file or word hash. </br>
 &nbsp;&nbsp;:small_orange_diamond: [keylogger.py](keylogger.py): keylogger to save every word typed on the keyboard. </br>
+&nbsp;&nbsp;:small_orange_diamond: [linuxcracker.py](linuxcracker.py): Linux Password Cracker - Dictionary Attack. </br>
 &nbsp;&nbsp;:small_orange_diamond: [payload.py](payload.py): simple reverse connection script, gets you shell command on the target system. </br>
 &nbsp;&nbsp;:small_orange_diamond: [port_scanner.py](port_scanner.py): simple port scanner. </br>
 &nbsp;&nbsp;:small_orange_diamond: [ssh_crack.py](ssh_crack.py): script for ssh bruteforce attack. </br>
