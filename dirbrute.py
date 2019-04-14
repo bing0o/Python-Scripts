@@ -133,9 +133,6 @@ if domain.endswith("/"):
 else:
 	domain = domain + "/"
 
-
-
-
 lines = len(open(urlsfile, encoding="utf-8").readlines())
 
 print("["+ yellow + bold +"Info"+ end +"]:\n")
@@ -152,20 +149,16 @@ urls = open(urlsfile, 'r')
 
 if ext == "Null":
         pass
-
 else:
         ext = ext.split(",")
-
-
 
 with executor(max_workers=int(thread)) as exe:
 	jobs = [exe.submit(presearch, domain, ext, url.strip('\n')) for url in urls]
 	#results = [job.result() for job in jobs]
 	
-#print('\n'.join(results))
-
-
-print(red+"Took: "+end, time.time() - start, "                          \r")
+took = (time.time() - start) / 60
+took = round(took,2)
+print(red+"Took: "+end, took, " m", "                          \r")
 
 print("\n\t* Happy Hacking *")
 
