@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-#  subchecker.py
+#  dirbrute.py
 #  
 #  Copyright 2019 bingo <bingo@hacklab>
 #  
@@ -31,7 +31,7 @@ print(blue+bold+"""
 \t  __| (_)_ __| |__  _ __ _   _| |_ ___ 
 \t / _` | | '__| '_ \| '__| | | | __/ _ \\
 \t| (_| | | |  | |_) | |  | |_| | ||  __/
-\t \__,_|_|_|  |_.__/|_|   \__,_|\__\___|"""+bold+"V: 1.5"+ end +blue+"""
+\t \__,_|_|_|  |_.__/|_|   \__,_|\__\___|"""+bold+"V: 1.6"+ end +blue+"""
 \t
 \t             Coded by: Bingo
 \t             ---------------
@@ -40,10 +40,9 @@ print(blue+bold+"""
 
 from concurrent.futures import ThreadPoolExecutor as executor
 import sys, time, requests
-
+from optparse import *
 
 start = time.time()
-count = 0
 
 def printer(word):
 	sys.stdout.write(word + "                                        \r")
@@ -99,66 +98,78 @@ def checkstatus(domain, url):
 			return False
 
 
-try:
-	urlsfile = sys.argv[1]#raw_input("[subdomains]> ")
-	domain = sys.argv[2]
-	
+parser = OptionParser("""
 
-except Exception:
-	print(red + "#Usage:\n\tpython dirbrute.py <Wordlist> <Domain> <Thread (optional)> <extensions (optional)>\n" + end)
-	exit(0)
+#Usage:
+	-t target host
+	-w wordlist
+	-d thread number (Optional, Default: 10)
+	-e extensions (Optional, ex: html,php)
+#Exemple:
+	python3 dirbrute.py -t domain.com -w dirlist.txt -d 20 -e php,html
 
-try:
-	thread = sys.argv[3]
+""")
 
-except:
-	thread = 20
+def Main():
+	try:
+		parser.add_option("-t", dest="target", type="string", help="the target domain")
+		parser.add_option("-w", dest="wordlist", type="string", help="wordlist file")
+		parser.add_option("-d", dest="thread", type="int", help="the thread number")
+		parser.add_option("-e", dest="extension", type="string", help="the extendions")
+		(options, args) = parser.parse_args()
+		if options.target == None or options.wordlist == None:
+			print(parser.usage)
+			exit(1)
+		else:
+			target = str(options.target)
+			wordlist = str(options.wordlist)
+			thread = str(options.thread)
+			ext = str(options.extension)
+		
+			if thread == "None":
+				thread = 10
+			else:
+				thread = thread
 
-try:
-	ext = sys.argv[4]
-	#ext = list(ext)
-except:
-	ext = "Null"
+			if target.startswith("http"):
+				target = target
+			else:
+				target = "http://" + target
 
-#print(ext)
+			if target.endswith("/"):
+				target = target
+			else:
+				target = target + "/"
 
+			lines = len(open(wordlist).readlines())
 
-if domain.startswith("http"):
-	domain = domain
-else:
-	domain = "http://" + domain
+			print("["+ yellow + bold +"Info"+ end +"]:\n")
+			print(blue + "["+red+"+"+blue+"] Target: " + end + target)
+			print(blue +"["+red+"+"+blue+"] File: " + end + wordlist)
+			print(blue +"["+red+"+"+blue+"] Length: " + end + str(lines))
+			print(blue +"["+red+"+"+blue+"] Thread: " + end + str(thread))
+			print(blue +"["+red+"+"+blue+"] Extension: " + end + str(ext))
+			print("\n["+ yellow + bold +"Start Searching"+ end +"]:\n")
+		
+			if ext == None:
+                        	ext = "Null"
+			else:
+                        	ext = ext.split(",")
+		
+			urls = open(wordlist, 'r')
+			with executor(max_workers=int(thread)) as exe:
+				jobs = [exe.submit(presearch, target, ext, url.strip('\n')) for url in urls]
 
-if domain.endswith("/"):
-	domain = domain
-else:
-	domain = domain + "/"
+			took = time.time() - start
+			took = took / 60
+			took = round(took,2)
 
-lines = len(open(urlsfile, encoding="utf-8").readlines())
+			print(red + "Took: " + end + str(took) + " m" + "                          \r")
 
-print("["+ yellow + bold +"Info"+ end +"]:\n")
-print(blue + "["+red+"+"+blue+"] Target: " + end + domain)
-print(blue +"["+red+"+"+blue+"] File: " + end + urlsfile)
-print(blue +"["+red+"+"+blue+"] Length: " + end + str(lines))
-print(blue +"["+red+"+"+blue+"] Thread: " + end + str(thread))
-print(blue +"["+red+"+"+blue+"] Extension: " + end + str(ext))
-print("\n["+ yellow + bold +"Start Searching"+ end +"]:\n")
+			print("\n\t* Happy Hacking *")
+	except Exception as e:
+		print(red + "#Error: " + end + str(e))
+		exit(1)
 
-#exit(0)
-
-urls = open(urlsfile, 'r')
-
-if ext == "Null":
-        pass
-else:
-        ext = ext.split(",")
-
-with executor(max_workers=int(thread)) as exe:
-	jobs = [exe.submit(presearch, domain, ext, url.strip('\n')) for url in urls]
-	#results = [job.result() for job in jobs]
-	
-took = (time.time() - start) / 60
-took = round(took,2)
-print(red+"Took: "+end, took, " m", "                          \r")
-
-print("\n\t* Happy Hacking *")
-
+if __name__ == '__main__':
+	Main()
