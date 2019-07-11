@@ -51,7 +51,7 @@ def printer(word):
 
 
 def presearch(domain, ext, url):
-	if ext == 'Null':
+	if ext == 'Null' or ext == 'None':
 		checkstatus(domain, url)
 	elif url == "" or url == " ":
 		pass
@@ -59,7 +59,7 @@ def presearch(domain, ext, url):
 		ext = list(ext)
 		ext.append("")
 		for i in ext:
-			if i == "":
+			if i == "" or i == "None":
 				link = url
 			else:
 				link = url + "." + str(i)
@@ -83,13 +83,19 @@ def checkstatus(domain, url):
 			req = requests.head(link)
 			st = str(req.status_code)
 			if st.startswith("2"):
-				print(green + "[+] 200 | Found: " + end + "[ " + url + " ]" + "                                                   \r")
+				print(green + "[+] "+st+" | Found: " + end + "[ " + url + " ]" + "                                                   \r")
 			elif st.startswith("3"):
 				link = req.headers['Location']
 				#link = req.url
 				print(yellow + "[*] "+st+" | Redirection From: " + end + "[ " + url + " ]" + yellow + " -> " + end + "[ " + link + " ]" + "                                         \r")
 
-			#writer(link,'up')
+			elif st.startswith("1"):
+				print(green + "[+] "+st+" | Found: " + end + "[ " + url + " ]" + "                                                   \r")
+			elif st.startswith("4"):
+				if st != '404':
+					print(blue+"[!] "+st+" | Found: " + end + "[ " + url + " ]" + "                                                   \r")
+
+					#writer(link,'up')
 			
 			return True
 			
@@ -98,17 +104,18 @@ def checkstatus(domain, url):
 			return False
 
 
-parser = OptionParser("""
+parser = OptionParser(green+"""
 
-#Usage:
+#Usage:"""+yellow+"""
 	-t target host
 	-w wordlist
 	-d thread number (Optional, Default: 10)
 	-e extensions (Optional, ex: html,php)
-#Exemple:
+"""+green+"""
+#Example:"""+yellow+"""
 	python3 dirbrute.py -t domain.com -w dirlist.txt -d 20 -e php,html
 
-""")
+"""+end)
 
 def Main():
 	try:
@@ -142,7 +149,7 @@ def Main():
 				target = target + "/"
 
 			lines = len(open(wordlist).readlines())
-
+			
 			print("["+ yellow + bold +"Info"+ end +"]:\n")
 			print(blue + "["+red+"+"+blue+"] Target: " + end + target)
 			print(blue +"["+red+"+"+blue+"] File: " + end + wordlist)
@@ -151,11 +158,11 @@ def Main():
 			print(blue +"["+red+"+"+blue+"] Extension: " + end + str(ext))
 			print("\n["+ yellow + bold +"Start Searching"+ end +"]:\n")
 		
-			if ext == None:
+			if ext == "None":
                         	ext = "Null"
 			else:
                         	ext = ext.split(",")
-		
+			
 			urls = open(wordlist, 'r')
 			with executor(max_workers=int(thread)) as exe:
 				jobs = [exe.submit(presearch, target, ext, url.strip('\n')) for url in urls]
