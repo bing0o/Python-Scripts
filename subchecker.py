@@ -1,5 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
+yellow = "\033[93m"
+green = "\033[92m"
 blue = "\033[94m"
 red = "\033[91m"
 bold = "\033[1m"
@@ -18,52 +20,76 @@ print(blue+bold+"""
 	"""+end)
 
 
+from concurrent.futures import ThreadPoolExecutor as executor # sudo pip install futures
+import sys, requests, argparse
 
-from selenium import webdriver
-import urllib2, sys, time
 
-try:
-	driver = webdriver.PhantomJS()
-except:
-	pass
-
-def takescreen(link):
-	driver.get(link)
-	name = link.split('/')[2]
-	time.sleep(2)
-	driver.save_screenshot(name+'.png')
+def printer(url):
+	sys.stdout.write(url+"                                                                                             \r")
+	sys.stdout.flush()
 	return True
 
 
 
-def checkstatus(url):
-	sys.stdout.write("Testing: "+url+"                                               \r")
-	sys.stdout.flush()
-	#print("Testing: "+url)
+def check(out, url):
+	printer("Testing: " + url)
+	url = 'http://' + url
 	try:
-		r = urllib2.urlopen(url, timeout=1)
+		req = requests.head(url, timeout=10)
+		scode = str(req.status_code)
+		if scode.startswith("2"):
+			print(green + "[+] "+scode+" | Found: " + end + "[ " + url + " ]")
+		elif scode.startswith("3"):
+			link = req.headers['Location']
+			print(yellow + "[*] "+scode+" | Redirection: " + end + "[ " + url + " ]" + yellow + " -> " + end + "[ " + link + " ]")
+		elif st.startswith("4"):
+			print(blue+"[!] "+scode+" | Check: " + end + "[ " + url + " ]")
 
-		print red+'[+] Found Site On: ' + end + url
-		sys.stdout.write("[*] Taking ScreenShot......."+"                                  \r")
-		sys.stdout.flush()
-		takescreen(url)
+		if out != 'None':
+			with open(out, 'a') as f:
+				f.write(url+"\n")
+				f.close()
+
 		return True
 
-			
 	except Exception:
-		pass
+		return False
 
-try:
-	urlsfile = sys.argv[1]#raw_input("[subdomains list]> ")
-except Exception:
-	print("#Usage:\npython subchecker.py <subdomains list>\n")
-	exit(0)
-urls = open(urlsfile, 'r')
 
-protocols = ['http://','https://']
 
-for url in urls:
-	for protocol in protocols:
-		url = url.strip('\n')
-		link = protocol + url
-		checkstatus(link)
+
+def main():
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-w", "--wordlist", help="Domains List File", type=str, required=True)
+	parser.add_argument("-t", "--thread", help="Theads Number - (Default: 10)", type=int)
+	parser.add_argument("-o", "--output", help="Save Results In a File", type=str) #action='store_true'
+
+	args = parser.parse_args()
+
+	wlist = str(args.wordlist)
+	threads = str(args.thread)
+	out = str(args.output)
+
+	if threads == 'None':
+		threads = 10
+	else:
+		threads = threads
+
+	lines = len(open(wlist).readlines())
+	print(blue +"["+red+"+"+blue+"] File: " + end + wlist)
+	print(blue +"["+red+"+"+blue+"] Length: " + end + str(lines))
+	print(blue +"["+red+"+"+blue+"] Threads: " + end + str(threads))
+	print(blue +"["+red+"+"+blue+"] Output: " + end + str(out))
+	print(red+bold+"\n[+] Results:\n"+end)
+
+	urls = open(wlist, 'r')
+	
+	with executor(max_workers=int(threads)) as exe:
+		[exe.submit(check, out, url.strip('\n')) for url in urls]
+
+
+
+
+if __name__=='__main__':
+	main()
+
