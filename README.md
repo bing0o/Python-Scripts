@@ -16,7 +16,7 @@ a Collection of simple python scripts, for penetration testing & automation
 &nbsp;&nbsp;:small_orange_diamond: [payload.py](payload.py): simple reverse connection script, gets you shell command on the target system. </br>
 &nbsp;&nbsp;:small_orange_diamond: [port_scanner.py](port_scanner.py): simple port scanner. </br>
 &nbsp;&nbsp;:small_orange_diamond: [ssh_crack.py](ssh_crack.py): script for ssh bruteforce attack. </br>
-&nbsp;&nbsp;:small_orange_diamond: [subchecker.py](subchecker.py): tool to check subdomains when it's up it'll take screenshot for the domain home page.</br>
+&nbsp;&nbsp;:small_orange_diamond: [subchecker.py](subchecker.py): Useful tools especially for penetration testers and bug hunters to check for subdomains (or list of domains generally) from a file, and get the up domains from it </br>
 
 I hope this collection will be helpfull for you.
 
