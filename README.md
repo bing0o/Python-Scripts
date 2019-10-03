@@ -2,7 +2,7 @@
 a Collection of simple python scripts, for penetration testing & automation
 
 ## :notebook_with_decorative_cover: &nbsp;Description:
-:black_small_square: short description about each script.
+:black_small_square: short description for each script.
 
 &nbsp;&nbsp;:small_orange_diamond: [SimpleHTTPServer.py](SimpleHTTPServer.py): simple http server running on port 4444, simply u can change it :)</br>
 &nbsp;&nbsp;:small_orange_diamond: [admin_finder.py](admin_finder.py): admin login page bruteforce. </br>
