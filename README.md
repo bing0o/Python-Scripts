@@ -2,7 +2,7 @@
 a Collection of simple python scripts, for penetration testing & automation
 
 ## :notebook_with_decorative_cover: &nbsp;Description:
-:black_small_square: short description about every script.
+:black_small_square: short description about each script.
 
 &nbsp;&nbsp;:small_orange_diamond: [SimpleHTTPServer.py](SimpleHTTPServer.py): simple http server running on port 4444, simply u can change it :)</br>
 &nbsp;&nbsp;:small_orange_diamond: [admin_finder.py](admin_finder.py): admin login page bruteforce. </br>
@@ -17,7 +17,8 @@ a Collection of simple python scripts, for penetration testing & automation
 &nbsp;&nbsp;:small_orange_diamond: [port_scanner.py](port_scanner.py): simple port scanner. </br>
 &nbsp;&nbsp;:small_orange_diamond: [ssh_crack.py](ssh_crack.py): script for ssh bruteforce attack. </br>
 &nbsp;&nbsp;:small_orange_diamond: [subchecker.py](subchecker.py): Useful tools especially for penetration testers and bug hunters to check for subdomains (or list of domains generally) from a file, and get the up domains from it </br>
+&nbsp;&nbsp;:small_orange_diamond: [webtech.py](webtech.py): Web Technologies Detector, useful for developers, penetration testers and bug hunters. </br>
 
 I hope this collection will be helpfull for you.
 
-*Happy Hacking ^_^*
+*Happy Hacking*
