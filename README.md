@@ -1,6 +1,5 @@
 ## :information_source: &nbsp;what is this ?!
-a Collection of simple python scripts, for penetration testing & automation
-
+a Collection of simple python scripts, for penetration testing & automation, it's like I just save my scripts here and not all of them are useful. ^^
 ## :notebook_with_decorative_cover: &nbsp;Description:
 :black_small_square: short description for each script.
 
@@ -18,7 +17,8 @@ a Collection of simple python scripts, for penetration testing & automation
 &nbsp;&nbsp;:small_orange_diamond: [ssh_crack.py](ssh_crack.py): script for ssh bruteforce attack. </br>
 &nbsp;&nbsp;:small_orange_diamond: [subchecker.py](subchecker.py): Useful tools especially for penetration testers and bug hunters to check for subdomains (or list of domains generally) from a file, and get the up domains from it </br>
 &nbsp;&nbsp;:small_orange_diamond: [webtech.py](webtech.py): Web Technologies Detector, useful for developers, penetration testers and bug hunters. </br>
+&nbsp;&nbsp;:small_orange_diamond: [waybackmachine.py](waybackmachine.py): this script uses wayback machine to collect a bunch of URLs and PATHs for a specific domain. </br>
 
-I hope this collection will be helpfull for you.
+I hope this collection will be useful!.
 
 *Happy Hacking*
