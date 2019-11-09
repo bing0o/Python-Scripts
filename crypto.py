@@ -1,6 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
-import os, time, argparse
+import os, time, argparse, getpass
 # sudo pip install pycrypto
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
@@ -126,7 +126,7 @@ def main():
 		exit(1)
 
 	if password == "None":
-		password = raw_input("[+] Enter Password: ")
+		password = getpass.getpass()
 
 	if enc != "None":
 		print(blue+"[+] Encrypt: "+end+"[ "+enc+" ]")
