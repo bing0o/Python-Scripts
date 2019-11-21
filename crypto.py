@@ -16,11 +16,11 @@ end = "\033[0m"
 print(red+"""
 
 \t
-\t               |
-\t               |
-\t          -----+------        -----------
-\t               |                                   
-\t               |
+\t               +
+\t               +
+\t           + + + + +          + + + + +
+\t               +                                   
+\t               +
 \t    )                                           (
 \t    \ \                                       / /
 \t     \ |\                                   / |/
@@ -88,7 +88,7 @@ def decrypt(key, filename):
 
 
 def check(key, filename):
-	chunksize = 64 * 1024
+	chunksize = 64# * 1024
 	secret = "0000hack1lab0000"
 	
 	with open(filename, 'rb') as infile:
@@ -97,9 +97,8 @@ def check(key, filename):
 
 		chunk = infile.read(chunksize)
 		test = decryptor.decrypt(chunk)
-		if secret not in test:
-			print(red+bold+"[!] Wrong Password!"+end)
-			exit(1)
+		if test[16:32] != secret:
+			exit(red+bold+"[!] Wrong Password!"+end)
 
 
 
@@ -114,12 +113,14 @@ def main():
 	parser.add_argument("-d", "--dcrypt", help="File Decryption", type=str)
 	parser.add_argument("-p", "--password", help="Password To Encrypt/Decrypt a File", type=str)
 	parser.add_argument("-x", "--delete", help="Delete The Original File", action='store_true')
+	parser.add_argument("-i", "--ignore", help="Ignore The Check For The Password.", action='store_true')
 	args = parser.parse_args()
 
 	enc = str(args.crypt)
 	dec = str(args.dcrypt)
 	password = str(args.password)
 	dd = str(args.delete)
+	ig = str(args.ignore)
 
 	if enc == "None" and dec == "None":
 		parser.print_help()
@@ -139,7 +140,8 @@ def main():
 
 	elif dec != "None":
 		print(blue+"[+] Decrypt: "+end+"[ "+dec+" ]")
-		check(getkey(password), dec)
+		if ig != 'True':
+			check(getkey(password), dec)
 		decrypt(getkey(password), dec)
 		name = dec.split(".hacklab")[0]
 		print(blue+"[+] Output: "+end+"[ "+name+" ]")
