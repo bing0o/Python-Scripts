@@ -97,7 +97,7 @@ def check(key, filename):
 
 		chunk = infile.read(chunksize)
 		test = decryptor.decrypt(chunk)
-		if test[16:32] != secret:
+		if secret not in test:
 			exit(red+bold+"[!] Wrong Password!"+end)
 
 
