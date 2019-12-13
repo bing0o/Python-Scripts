@@ -13,7 +13,7 @@ a Collection of simple python scripts, for penetration testing & automation, it'
 &nbsp;&nbsp;:small_orange_diamond: [keylogger.py](keylogger.py): keylogger to save every word typed on the keyboard. </br>
 &nbsp;&nbsp;:small_orange_diamond: [linuxcracker.py](linuxcracker.py): Linux Password Cracker - Dictionary Attack. </br>
 &nbsp;&nbsp;:small_orange_diamond: [payload.py](payload.py): simple reverse connection script, gets you shell command on the target system. </br>
-&nbsp;&nbsp;:small_orange_diamond: [port_scanner.py](port_scanner.py): simple port scanner. </br>
+&nbsp;&nbsp;:small_orange_diamond: [PortScan.py](PortScan.py): simple port scanner. </br>
 &nbsp;&nbsp;:small_orange_diamond: [ssh_crack.py](ssh_crack.py): script for ssh bruteforce attack. </br>
 &nbsp;&nbsp;:small_orange_diamond: [subchecker.py](subchecker.py): Useful tools especially for penetration testers and bug hunters to check for subdomains (or list of domains generally) from a file, and get the up domains from it </br>
 &nbsp;&nbsp;:small_orange_diamond: [webtech.py](webtech.py): Web Technologies Detector, useful for developers, penetration testers and bug hunters. </br>
