@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-import os, time, argparse, getpass
+import os, argparse
+from getpass import getpass
 # sudo pip install pycrypto
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
@@ -14,29 +15,26 @@ bold = "\033[1m"
 end = "\033[0m"
 
 print(red+"""
+              |
+              |
+          ----+----          ---------
+              |                                   
+              |
+   )                                           (
+   \ \                                       / /
+    \ |\                                   / |/
+     \|  \           hack1lab            /   /
+      \   |\         --------          / |  /
+       \  |  \_______________________/   | /
+        \ |    |      |      |      |    |/
+         \|    |      |      |      |    /
+          \____|______|______|______|___/
 
-\t
-\t               +
-\t               +
-\t           + + + + +          + + + + +
-\t               +                                   
-\t               +
-\t    )                                           (
-\t    \ \                                       / /
-\t     \ |\                                   / |/
-\t      \|  \           hack1lab            /   /
-\t       \   |\         --------          / |  /
-\t        \  |  \_______________________/   | /
-\t         \ |    |      |      |      |    |/
-\t          \|    |      |      |      |    /
-\t           \____|______|______|______|___/
-
-\t               By: @hack1lab, @bing0o
-\t            fb.me/hack1lab, fb.me/pOOn3r
-
+                 Files Encryption
+            fb.me/hack1lab, @hack1lab
 """+end)
 
-def encrypt(key, filename):
+def encrypt(key, filename, ig):
 	chunksize = 64*1024
 	outputFile = filename+".hacklab"
 	size = os.path.getsize(filename) #+ 16
@@ -50,7 +48,8 @@ def encrypt(key, filename):
 		with open(outputFile, 'wb') as outfile:
 			outfile.write(filesize.encode('utf-8'))
 			outfile.write(IV)
-			outfile.write(encryptor.encrypt(secret))
+			if ig != 'True':
+				outfile.write(encryptor.encrypt(secret))
 
 			while True:
 				chunk = infile.read(chunksize)
@@ -127,11 +126,11 @@ def main():
 		exit(1)
 
 	if password == "None":
-		password = getpass.getpass()
+		password = getpass()
 
 	if enc != "None":
 		print(blue+"[+] Encrypt: "+end+"[ "+enc+" ]")
-		encrypt(getkey(password), enc)
+		encrypt(getkey(password), enc, ig)
 		print(blue+"[+] Output: "+end+"[ "+enc+".hacklab"+" ]")
 		if dd == "True":
 			print(red+"[!] Remove: "+end+"[ "+enc+" ]")
