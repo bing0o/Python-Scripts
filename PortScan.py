@@ -4,7 +4,10 @@ from concurrent.futures import ThreadPoolExecutor as executor
 import socket
 import time
 import sys
+import argparse
 
+green = "\033[32m"
+bold = "\033[1m"
 blue = "\033[94m"
 red = "\033[91m"
 end = "\033[0m"
@@ -42,45 +45,67 @@ def scan(ip,port,l):
 			print(str(port) + "/TCP" + space + "Unknown")
 
 		except KeyboardInterrupt:
-			print("[-] Exiting!")
+			print(red+"[-] Exiting!"+end)
 			exit(1)
 
 	return True
 
-parser = ("""
-#Usage:
-	
-	python scan.py <Target Ip/Host> <Threads, (default: 10)>
-""")
 
-try:
-	target = sys.argv[1]
-except:
-	print(parser)
-	exit(1)
 
-try:
-	thread = sys.argv[2]
-except:
-	thread = 10
 
-print(red+"[+] Target: "+end+target)
-print(red+"[+] Threads: "+end+str(thread))
-print(red+"[+] Start The Scan\n"+end)
-print("PORT          SERVICE")
-print("----          -------")
-ports = range(65535)
-try:
+def main():
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-t", "--target", help="Target IP/Host", type=str)
+	parser.add_argument("-d", "--thread", help="threads number (Default 5)", type=int)
+	parser.add_argument("-p", "--port", help="Ports range (Example: -p 20-1024)", type=str)
+	args = parser.parse_args()
+
+	target = str(args.target)
+	thread = args.thread
+	ports = str(args.port)
+
+	if target == "None":
+		parser.print_help()
+		exit(1)
+	if thread == None:
+		thread = 5
+
+	if ports == "None":
+		ports = range(65535)
+		p = "1-65535"
+	else:
+		try:
+			p = ports
+			ports = ports.split("-")
+			ports = range(int(ports[0]), int(ports[1]))
+		except IndexError:
+			print("-p/--port, should be a range of ports, Example: -p 20-1024")
+			exit(1)
+
+	print(green+"[+] Target: "+end+target)
+	print(green+"[+] Threads: "+end+str(thread))
+	print(green+"[+] Ports: "+end+p)
+	print(bold+"\n[+] Start The Scan\n"+end)
+	print("PORT          SERVICE")
+	print("----          -------")
+
 	with executor(max_workers=int(thread)) as exe:
-		[exe.submit(scan, target, port, len(str(port))) for port in ports]
-except KeyboardInterrupt:
-	print("[-] Exiting!")
-	exit(1)
+		try:
+			[exe.submit(scan, target, port, len(str(port))) for port in ports]
+		except KeyboardInterrupt:
+			print(red+"[-] Exiting!"+end)
+			exit(1)
 
 
-took = time.time() - start
-took = took / 60
-took = round(took, 2)
 
-print("                            \r")
-print(blue+"[+] Took: "+end+str(took)+"           ")
+	took = time.time() - start
+	t = str(took).split('.')[0]
+	m = int(t) / 60
+	s = int(t) % 60
+	
+	print("                            \r")
+	print(blue+"[+] Took: "+end+str(m)+":"+str(s))
+
+
+if __name__ == '__main__':
+	main()
