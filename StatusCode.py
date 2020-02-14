@@ -22,18 +22,19 @@ def check(out, url):
 	link = 'http://' + url
 	try:
 		req = requests.head(link, timeout=10)
+		length = str(req.headers['Content-Length'])
 		scode = str(req.status_code)
 		if scode.startswith("2"):
-			print(blue+"["+bold+green+str(scode)+end+blue+"]"+end+" | "+str(url))
+			print(blue+"["+bold+green+str(scode)+end+blue+"]"+end+" | "+str(url)+length)
 		elif scode.startswith("3"):
 			if req.headers['Location'].startswith("https://"+url):
-				print(blue+"["+bold+yellow+str(scode)+end+blue+"]"+end+" | "+str(url)+" - HTTPS")
+				print(blue+"["+bold+yellow+str(scode)+end+blue+"]"+end+" | "+str(url)+" - HTTPS | "+length)
 			else:
-				print(blue+"["+bold+yellow+str(scode)+end+blue+"]"+end+" | "+str(url)+" | "+req.headers['Location'])
+				print(blue+"["+bold+yellow+str(scode)+end+blue+"]"+end+" | "+str(url)+" | "+req.headers['Location']+" | "+length)
 		elif scode.startswith("4"):
-			print(blue+"["+bold+red+str(scode)+end+blue+"]"+end+" | "+str(url))
+			print(blue+"["+bold+red+str(scode)+end+blue+"]"+end+" | "+str(url)+" | "+length)
 		else:
-			print(blue+"["+end+str(scode)+blue+"]"+end+" | "+str(url))
+			print(blue+"["+end+str(scode)+blue+"]"+end+" | "+str(url)+" | "+length)
 
 		if out != 'None':
 			with open(out, 'a') as f:
