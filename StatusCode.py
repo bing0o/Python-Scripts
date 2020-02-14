@@ -16,18 +16,20 @@ def printer(url):
 	sys.stdout.flush()
 	return True
 
-
 def check(out, url):
 	#print("hell")
 	printer("Testing: " + url)
-	link = 'https://' + url
+	link = 'http://' + url
 	try:
 		req = requests.head(link, timeout=10)
 		scode = str(req.status_code)
 		if scode.startswith("2"):
 			print(blue+"["+bold+green+str(scode)+end+blue+"]"+end+" | "+str(url))
 		elif scode.startswith("3"):
-			print(blue+"["+bold+yellow+str(scode)+end+blue+"]"+end+" | "+str(url))
+			if req.headers['Location'].startswith("https://"+url):
+				print(blue+"["+bold+yellow+str(scode)+end+blue+"]"+end+" | "+str(url)+" - HTTPS")
+			else:
+				print(blue+"["+bold+yellow+str(scode)+end+blue+"]"+end+" | "+str(url)+" | "+req.headers['Location'])
 		elif scode.startswith("4"):
 			print(blue+"["+bold+red+str(scode)+end+blue+"]"+end+" | "+str(url))
 		else:
@@ -72,7 +74,6 @@ def main():
 	
 	with executor(max_workers=int(threads)) as exe:
 		[exe.submit(check, out, url.strip('\n')) for url in urls]
-
 
 if __name__=='__main__':
 	main()
