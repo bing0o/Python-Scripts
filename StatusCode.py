@@ -38,7 +38,7 @@ def check(out, url):
 
 		if out != 'None':
 			with open(out, 'a') as f:
-				f.write(str(scode)+" | "+url+"\n")
+				f.write(str(scode)+" | "+url+" | "+length+"\n")
 				f.close()
 
 		return True
