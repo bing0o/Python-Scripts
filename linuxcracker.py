@@ -2,9 +2,20 @@
 
 import crypt, sys
 
+
+def printer(thing):
+	sys.stdout.write(thing+"                         \r")
+	sys.stdout.flush()
+	return True
+
+
 def cracker(passcrypt, dicfile):
+	count=1
+	lines = len(open(dicfile).readlines())
 	dicfile = open(dicfile, 'r')
 	for word in dicfile:
+		printer("["+str(count)+"/"+str(lines)+"]")
+		count+=1
 		password = word.strip('\n')
 		cryptword = crypt.crypt(password, passcrypt)
 		if cryptword == passcrypt:
