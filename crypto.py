@@ -2,7 +2,7 @@
 
 import os, argparse
 from getpass import getpass
-# sudo pip install pycrypto
+# sudo pip install pycryptodome==3.6.1
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto import Random
