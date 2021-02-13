@@ -34,7 +34,7 @@ if algo == None:
 	algo = 'HS256'
 
 secrets = open(wlist, 'r')
-with executor(max_workers=int(2)) as exe:
+with executor(max_workers=int(threads)) as exe:
 	[exe.submit(crack, token, algo, secret.strip('\n')) for secret in secrets]
 
 
