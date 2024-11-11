@@ -1,8 +1,8 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import os, argparse
 from getpass import getpass
-# sudo pip install pycryptodome==3.6.1
+# sudo pip3 install pycryptodome     // 3.21.0
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto import Random
@@ -40,7 +40,7 @@ def encrypt(key, filename, ig):
 	size = os.path.getsize(filename) #+ 16
 	filesize = str(size).zfill(16)
 	IV = Random.new().read(16)
-	secret = "0000hack1lab0000"
+	secret = "0000hack1lab0000".encode("utf-8")
 
 	encryptor = AES.new(key, AES.MODE_CBC, IV)
 
@@ -80,15 +80,16 @@ def decrypt(key, filename):
 				if len(chunk) == 0:
 					break
 
-				chunk = str(decryptor.decrypt(chunk))
-				chunk = chunk.replace("0000hack1lab0000", "")
+				#chunk = str(decryptor.decrypt(chunk))
+				chunk = decryptor.decrypt(chunk)
+				chunk = chunk.replace("0000hack1lab0000".encode("utf-8"), "".encode("utf-8"))
 				outfile.write(chunk)
 			outfile.truncate(filesize)
 
 
 def check(key, filename):
 	chunksize = 64# * 1024
-	secret = "0000hack1lab0000"
+	secret = "0000hack1lab0000".encode("utf-8")
 	
 	with open(filename, 'rb') as infile:
 		IV = infile.read(16)
